@@ -3,6 +3,7 @@ import {
   Dialog, DialogTitle, DialogContent, DialogActions, TextField, Button, Box
 } from '@mui/material';
 import { createSurgery, updateSurgery, type Surgery } from '../services/api';
+import toast from 'react-hot-toast';
 
 interface SurgeryDialogProps {
   open: boolean;
@@ -55,6 +56,20 @@ const SurgeryDialog = ({ open, onClose, editingSurgery, onSave }: SurgeryDialogP
       onSave();
     } catch (error) {
       console.error('Failed to save surgery:', error);
+      toast.error('Failed to save surgery');
+    } finally {
+      if (editingSurgery) {
+        toast.success('Surgery updated successfully');
+      } else {
+        toast.success('Surgery scheduled successfully');
+      }
+      setFormData({
+        date_time: '',
+        surgery_type: '',
+        surgeon_name: '',
+        patient_name: '',
+        patient_birthdate: '',
+      });
     }
   };
 

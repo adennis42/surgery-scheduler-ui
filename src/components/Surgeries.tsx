@@ -11,6 +11,7 @@ import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 import { getSurgeries, deleteSurgery, type Surgery } from "../services/api";
 import SurgeryDialog from "./SurgeryDialog";
 import ConfirmationDialog from "./ConfirmationDialog";
+import toast from "react-hot-toast";
 
 const Surgeries = () => {
   const [surgeries, setSurgeries] = useState<Surgery[]>([]);
@@ -22,10 +23,10 @@ const Surgeries = () => {
   const fetchSurgeries = async () => {
     try {
       const data = await getSurgeries();
-      console.log("Fetched surgeries:", data);
       setSurgeries(data);
     } catch (error) {
       console.error("Failed to fetch surgeries:", error);
+      toast.error("Failed to fetch surgeries");
     } finally {
       setLoading(false);
     }
@@ -40,8 +41,10 @@ const Surgeries = () => {
       await deleteSurgery(id);
       setConfirmDeleteId(null);
       fetchSurgeries(); // Refresh the list
+      toast.success("Surgery deleted successfully");  
     } catch (error) {
       console.error("Failed to delete surgery:", error);
+      toast.error("Failed to delete surgery");
     }
   };
 
